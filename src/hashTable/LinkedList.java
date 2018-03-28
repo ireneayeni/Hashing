@@ -1,12 +1,10 @@
 package hashTable;
-import java.util.Currency;
 
 /**
  * LinkList implementation with generics
  *
- * @author malalanayake
- *
  * @param <T>
+ * @author oyinkansola
  */
 public class LinkedList<T> {
     private LinkedNode<T> first;
@@ -15,8 +13,6 @@ public class LinkedList<T> {
 
     /**
      * Internal linked node implementation
-     *
-     * @author malalanayake
      *
      * @param <T>
      */
@@ -58,12 +54,21 @@ public class LinkedList<T> {
         this.last = this.first;
     }
 
+    public T get(int index) {//getting the next connected node.
+        LinkedNode<T> item = this.first;
+        while (index > 0 && item.getNext() != null) {
+            item = item.getNext();
+            index--;
+        }
+        return index == 0 && item.data != null ? item.data : null;
+    }
+
     /**
      * Add values to the list
      *
      * @param data
      */
-    public void add(T data) {
+    public void add(T data) {//pulling in  the data into a new node
         LinkedNode<T> newData = new LinkedNode<T>(data);
         if (this.first.getData() == null) {
             this.first = newData;
@@ -80,12 +85,11 @@ public class LinkedList<T> {
      *
      * @param data
      */
-    public void remove(T data) {
+    public void remove(T data) {//handles when there is just one node on tye list
         LinkedNode<T> current = first;
         if (this.first.getData().equals(data)) {
             if (this.first.getNext() == null) {
                 LinkedNode<T> newNode = new LinkedNode<T>();
-                this.first.setData(null);
                 this.first = newNode;
                 this.last = this.first;
             } else {
@@ -93,7 +97,7 @@ public class LinkedList<T> {
                 this.first = this.first.getNext();
             }
         } else {
-            boolean wasDeleted = false;
+            boolean wasDeleted = false;//handles deletion fron the list
             while (!wasDeleted) {
                 LinkedNode<T> currentNext = current.getNext();
                 if (currentNext.getData().equals(data)) {
@@ -109,46 +113,11 @@ public class LinkedList<T> {
         }
     }
 
-    public void print() {
-        boolean allPrinted = false;
-        LinkedNode<T> crr = first;
-        System.out.print("[");
-        while (!allPrinted) {
-            if (crr.getData() != null) {
-                if (crr.getNext() != null) {
-                    System.out.print(crr.getData().toString() + ",");
-                    LinkedNode<T> crrNext = crr.getNext();
-                    crr = crrNext;
-                } else {
-                    System.out.print(crr.getData().toString() + "]");
-                    allPrinted = true;
-                }
-            } else {
-                allPrinted = true;
-            }
-        }
-        System.out.println();
+    public void remove(int index) {//deletes based on index and then deletes the value.
+        this.remove(get(index));
     }
 
-    public int getCount() {
+    public int size() {
         return count;
-    }
-
-    public static void main(String[] args) {
-        LinkedListWithGenerics<String> linkedLst = new LinkedListWithGenerics<String>();
-        linkedLst.add("Test");
-        linkedLst.add("Free");
-        linkedLst.add("Yes");
-        linkedLst.add("Me");
-
-        linkedLst.print();
-        System.out.println(linkedLst.getCount());
-
-        linkedLst.remove("Me");
-
-        linkedLst.print();
-
-        System.out.println(linkedLst.getCount());
-
     }
 }
